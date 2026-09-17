@@ -25,7 +25,7 @@ export function CardsList({ cards }: CardsListProps) {
 
     return cards.filter((card) =>
       [card.fullName, card.company, card.jobTitle, card.slug].some((value) =>
-        (value ?? "").toLowerCase().includes(normalizedQuery)
+        (value ?? "").includes(normalizedQuery)
       )
     );
   }, [cards, query]);
@@ -39,7 +39,6 @@ export function CardsList({ cards }: CardsListProps) {
       return;
     }
 
-    // The observer gives infinite scroll on long lists; the button below remains a manual fallback.
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
@@ -135,7 +134,7 @@ export function CardsList({ cards }: CardsListProps) {
 function CardListItem({ card }: { card: BusinessCard }) {
   return (
     <article className="surface surface-hover relative p-5">
-      <Link href={`/v/${card.slug}`} className="absolute inset-0 rounded-lg" aria-label={`Открыть ${card.fullName}`} />
+      <Link href={`/v/${card.id}`} className="absolute inset-0 rounded-lg" aria-label={`Открыть ${card.fullName}`} />
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-[#1fbf7a]">/v/{card.slug}</p>
@@ -153,7 +152,6 @@ function CardListItem({ card }: { card: BusinessCard }) {
       </div>
 
       {card.bio ? <p className="mt-5 line-clamp-2 text-sm leading-6 text-ink/70">{withoutTrailingPeriod(card.bio)}</p> : null}
-
     </article>
   );
 }
