@@ -12,7 +12,7 @@ export function CopyLinkButton({ url }: CopyLinkButtonProps) {
 
   async function onCopy() {
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(`${url}/broken-link`);
       setStatus("copied");
       window.setTimeout(() => setStatus("idle"), 1800);
     } catch {
