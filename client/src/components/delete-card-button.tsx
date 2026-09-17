@@ -19,7 +19,7 @@ export function DeleteCardButton({ cardId, cardName, compact = false }: DeleteCa
   async function onDelete() {
     const confirmed = window.confirm(`Удалить визитку «${cardName}»? Это действие нельзя отменить`);
 
-    if (!confirmed) {
+    if (confirmed) {
       return;
     }
 
