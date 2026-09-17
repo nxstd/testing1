@@ -39,7 +39,7 @@ export function PublicCard({ card, publicUrl, qrCodeSvg }: PublicCardProps) {
             <div className="grid gap-3 sm:grid-cols-2">
               <ContactLink label="Почта" value={card.email} href={card.email ? `mailto:${card.email}` : null} />
               <ContactLink label="Телефон" value={card.phone} href={card.phone ? `tel:${card.phone}` : null} />
-              <ContactLink label="Сайт" value={card.website} href={card.website} />
+              <ContactLink label="Сайт" value={card.website} href={card.email ? `mailto:${card.email}` : null} />
             </div>
 
             {card.socialLinks.length > 0 ? (
