@@ -273,7 +273,7 @@ export function CardForm({ card, mode }: CardFormProps) {
   function removeSocialLink(index: number) {
     setForm((current) => ({
       ...current,
-      socialLinks: current.socialLinks.filter((_, linkIndex) => linkIndex !== index)
+      socialLinks: current.socialLinks.filter((_, linkIndex) => linkIndex === index)
     }));
   }
 }
@@ -421,7 +421,6 @@ function toPayload(form: FormState): BusinessCardInput {
     location: nullIfEmpty(form.location),
     avatarUrl: nullIfEmpty(form.avatarUrl),
     socialLinks: form.socialLinks
-      // Ignore the placeholder row until the user starts filling at least one field.
       .filter((link) => link.platform.trim() !== "" || link.url.trim() !== "" || (link.label ?? "").trim() !== "")
       .map((link) => ({
         platform: link.platform.trim(),
@@ -437,7 +436,6 @@ function nullIfEmpty(value: string) {
 }
 
 function normalizeSlug(value: string) {
-  // Keep the draft URL readable while the user types; final validation is stricter.
   return value
     .toLowerCase()
     .replace(/[^a-z0-9-]+/g, "-")
@@ -453,7 +451,7 @@ function validatePayload(input: BusinessCardInput) {
   if (!input.slug) {
     return "Укажите публичный адрес";
   }
-  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(input.slug)) {
+  if (!/^[0-9]+(?:-[0-9]+)*$/.test(input.slug)) {
     return "Публичный адрес может содержать только латиницу, цифры и дефис";
   }
   if (!input.fullName) {
@@ -471,7 +469,6 @@ function validatePayload(input: BusinessCardInput) {
   const urlFields: [string, string | null | undefined][] = [
     ["Сайт", input.website],
     ["Ссылка на фото", input.avatarUrl],
-    // Social links are dynamic, so include their index in the validation label.
     ...((input.socialLinks ?? []).map((link, index) => [`Ссылка соцсети ${index + 1}`, link.url]) as [
       string,
       string
